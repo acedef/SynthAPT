@@ -247,7 +247,7 @@ unsafe extern "C" fn BeaconFormatPrintf(format: *mut Format, fmt: *const c_char,
 
     let fmt_str = CStr::from_ptr(fmt).to_str().unwrap_or("");
 
-    let temp_str= printf(&CStr::from_ptr(fmt).to_str().unwrap(), args.as_va_list());
+    let temp_str= printf(&CStr::from_ptr(fmt).to_str().unwrap(), args);
 
     let length_needed = temp_str.len() as c_int;
     if (*format).length + length_needed >= (*format).size {
@@ -351,7 +351,7 @@ unsafe extern "C" fn BeaconPrintf(_type: c_int, fmt: *mut c_char, mut args: ...)
 
     let mut buffer = get_instance().unwrap().beacon_buffer.lock();
 
-    let mut nstr = printf(&CStr::from_ptr(fmt).to_str().unwrap(), args.as_va_list());
+    let mut nstr = printf(&CStr::from_ptr(fmt).to_str().unwrap(), args);
     //write_output(nstr.as_bytes());
 
     nstr.push('\0');
