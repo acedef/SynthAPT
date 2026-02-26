@@ -1,2 +1,3 @@
 [toolchain]
-channel = "nightly"
+channel = "nightly-2026-02-24"
+targets = ["x86_64-pc-windows-gnu"]

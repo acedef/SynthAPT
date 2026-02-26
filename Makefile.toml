@@ -25,9 +25,10 @@ cargo build -p synthapt --release
 '''
 
 [tasks.build-nix]
-description = "Build fully static synthapt binary (requires musl-tools and x86_64-unknown-linux-musl target)"
+description = "Build win64 shellcode then synthapt release binary for Linux/WSL"
+dependencies = ["build-win64"]
 script_runner = "@shell"
 script = '''
-cargo build -p synthapt --release --target x86_64-unknown-linux-musl
-cp target/x86_64-unknown-linux-musl/release/synthapt out/synthapt
+cargo build -p synthapt --release
+cp target/release/synthapt out/synthapt
 '''
