@@ -631,6 +631,7 @@ pub unsafe extern "C" fn py_enable_privilege(_self: *mut c_void, args: *mut c_vo
 // Registry functions
 // ============================================================================
 
+#[cfg(feature = "registry")]
 pub unsafe extern "C" fn py_reg_create_key(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -649,6 +650,7 @@ pub unsafe extern "C" fn py_reg_create_key(_self: *mut c_void, args: *mut c_void
     }
 }
 
+#[cfg(feature = "registry")]
 pub unsafe extern "C" fn py_reg_delete_key(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -667,6 +669,7 @@ pub unsafe extern "C" fn py_reg_delete_key(_self: *mut c_void, args: *mut c_void
     }
 }
 
+#[cfg(feature = "registry")]
 pub unsafe extern "C" fn py_reg_set_value(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -697,6 +700,7 @@ pub unsafe extern "C" fn py_reg_set_value(_self: *mut c_void, args: *mut c_void)
     }
 }
 
+#[cfg(feature = "registry")]
 pub unsafe extern "C" fn py_reg_query_value(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -861,6 +865,7 @@ pub unsafe extern "C" fn py_remove_user_from_group(_self: *mut c_void, args: *mu
 // LDAP functions
 // ============================================================================
 
+#[cfg(feature = "ad")]
 pub unsafe extern "C" fn py_query_ldap(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -930,6 +935,7 @@ pub unsafe extern "C" fn py_query_ldap(_self: *mut c_void, args: *mut c_void) ->
     }
 }
 
+#[cfg(feature = "ad")]
 pub unsafe extern "C" fn py_set_ad_attr_str(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -961,6 +967,7 @@ pub unsafe extern "C" fn py_set_ad_attr_str(_self: *mut c_void, args: *mut c_voi
     }
 }
 
+#[cfg(feature = "ad")]
 pub unsafe extern "C" fn py_set_ad_attr_bin(_self: *mut c_void, args: *mut c_void) -> *mut c_void {
     let inst = match get_instance() {
         Some(i) => i,
@@ -2133,9 +2140,13 @@ pub unsafe fn create_agent_module(dll_base: *mut c_void) {
     methods_vec.push(PyMethodDef { ml_name: b"enable_privilege\0".as_ptr(), ml_meth: py_enable_privilege as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Enable a privilege\0".as_ptr() });
 
     // Registry functions
+    #[cfg(feature = "registry")]
     methods_vec.push(PyMethodDef { ml_name: b"reg_create_key\0".as_ptr(), ml_meth: py_reg_create_key as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Create registry key\0".as_ptr() });
+    #[cfg(feature = "registry")]
     methods_vec.push(PyMethodDef { ml_name: b"reg_delete_key\0".as_ptr(), ml_meth: py_reg_delete_key as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Delete registry key\0".as_ptr() });
+    #[cfg(feature = "registry")]
     methods_vec.push(PyMethodDef { ml_name: b"reg_set_value\0".as_ptr(), ml_meth: py_reg_set_value as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Set registry value\0".as_ptr() });
+    #[cfg(feature = "registry")]
     methods_vec.push(PyMethodDef { ml_name: b"reg_query_value\0".as_ptr(), ml_meth: py_reg_query_value as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Query registry value\0".as_ptr() });
 
     // User/Group functions
@@ -2147,8 +2158,11 @@ pub unsafe fn create_agent_module(dll_base: *mut c_void) {
     methods_vec.push(PyMethodDef { ml_name: b"remove_user_from_group\0".as_ptr(), ml_meth: py_remove_user_from_group as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Remove user from group\0".as_ptr() });
 
     // LDAP functions
+    #[cfg(feature = "ad")]
     methods_vec.push(PyMethodDef { ml_name: b"query_ldap\0".as_ptr(), ml_meth: py_query_ldap as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Query LDAP\0".as_ptr() });
+    #[cfg(feature = "ad")]
     methods_vec.push(PyMethodDef { ml_name: b"set_ad_attr_str\0".as_ptr(), ml_meth: py_set_ad_attr_str as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Set AD string attribute\0".as_ptr() });
+    #[cfg(feature = "ad")]
     methods_vec.push(PyMethodDef { ml_name: b"set_ad_attr_bin\0".as_ptr(), ml_meth: py_set_ad_attr_bin as *const c_void, ml_flags: METH_VARARGS, ml_doc: b"Set AD binary attribute\0".as_ptr() });
 
     // HTTP/Network functions
